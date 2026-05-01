@@ -872,19 +872,109 @@
 
   /* ============ RESPONSIVE ============ */
   @media (max-width: 900px) {
-    .nav { padding: 18px 24px; }
-    .nav ul { gap: 18px; font-size: 9px; }
-    .explore, .why { grid-template-columns: 1fr; }
-    .explore-left, .why-left, .why-right { padding: 80px 28px; }
-    .why-left::before { font-size: 280px; }
-    .connect { padding: 80px 28px 40px; }
-    .connect-grid { grid-template-columns: 1fr; }
-    .footer { flex-direction: column; gap: 12px; text-align: center; }
+    /* ---- NAV ---- */
+    .nav { padding: 16px 20px; }
+    .nav ul { gap: 14px; font-size: 9px; }
+    .nav .brand { font-size: 10px; }
 
-    /* Hide the reels panel on mobile — text-only Chapter 1 */
+    /* ---- HERO ---- */
+    .hero-content { padding: 0 20px; }
+    .hero-logo {
+      width: 240px;
+      height: 240px;
+    }
+    .hero-logo .logo-text { font-size: 42px; }
+    .hero-logo::before {
+      width: 78px; height: 78px;
+      top: 38px; right: 18px;
+    }
+    .hero-tagline {
+      font-size: 17px !important;
+      padding: 0 10px;
+      margin-bottom: 40px;
+    }
+    .rating-badge {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px 14px;
+      padding: 14px 20px;
+      max-width: calc(100% - 40px);
+    }
+    .rating-meta { align-items: flex-start; }
+    .scroll-cue { bottom: 20px; }
+
+    /* ---- EXPLORE (Chapter 1) ---- */
+    .explore { grid-template-columns: 1fr; }
+    .explore-left { padding: 90px 24px 80px; }
+    .explore-left::before { font-size: 130px; top: 50px; left: 20px; }
+    .explore h2 { font-size: 48px; margin-bottom: 30px; }
+    .explore-desc { font-size: 17px; margin-bottom: 32px; }
     .explore-right { display: none; }
-    /* Pause/cleanup videos so they don't load data on mobile */
     .reel-video { display: none; }
+
+    /* ---- WHY US ---- */
+    .why { grid-template-columns: 1fr; }
+    .why-left { padding: 70px 24px 80px; }
+    .why-right { padding: 70px 24px; }
+    .why-left::before {
+      font-size: 240px;
+      bottom: 20px; right: 20px;
+    }
+    .why h2 { font-size: 56px; }
+    .trustpilot-slot { margin-top: 36px; max-width: 100%; }
+    .review-mockup { padding: 22px 20px 20px; }
+    .review-mockup-head {
+      flex-wrap: wrap;
+      gap: 8px 12px;
+    }
+    .review-mockup-meta { font-size: 9px; }
+    .review-card-title { font-size: 12px; }
+    .review-card-text { font-size: 14px; }
+    .check-list { gap: 18px; }
+    .check-list li { gap: 16px; padding-bottom: 18px; }
+    .check-text { font-size: 17px; }
+    .check-text strong { font-size: 10px; }
+
+    /* ---- CONNECT ---- */
+    .connect { padding: 70px 20px 40px; min-height: auto; }
+    .connect h2 { font-size: 56px; line-height: 0.95; }
+    .connect-sub {
+      font-size: 18px;
+      margin-bottom: 40px;
+    }
+    .connect-grid {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .connect-card { min-height: 160px; padding: 26px 22px; }
+    .connect-card .card-handle { font-size: 20px; }
+    .connect-card.featured .card-handle.big { font-size: 28px; }
+    .connect-card.featured .card-arrow { width: 46px; height: 46px; }
+    .connect::before { font-size: 30vw; }
+
+    /* ---- FOOTER ---- */
+    .footer {
+      flex-direction: column;
+      gap: 10px;
+      text-align: center;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      margin-top: 50px;
+    }
+
+    /* ---- SHARED HEADINGS ---- */
+    .section-tag { font-size: 10px; margin-bottom: 22px; }
+  }
+
+  /* Tighter pass for very small phones */
+  @media (max-width: 420px) {
+    .nav ul { gap: 10px; font-size: 8px; }
+    .hero-logo { width: 200px; height: 200px; }
+    .hero-logo .logo-text { font-size: 36px; }
+    .hero-logo::before { width: 64px; height: 64px; top: 36px; right: 14px; }
+    .explore h2 { font-size: 40px; }
+    .why h2 { font-size: 46px; }
+    .connect h2 { font-size: 46px; }
   }
 </style>
 </head>
@@ -927,6 +1017,7 @@
       <svg class="rating-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
     </a>
   </div>
+
 </section>
 
 <!-- ========================== SECTION 2 — EXPLORE ========================== -->
@@ -1100,7 +1191,7 @@
 
     <div class="footer">
       <span>© 2026 Michitabi · Tokyo, Japan</span>
-      <span>Site handled by 旅人</span>
+      <span>Site handled by 旅人ザイ</span>
       <span>Example site through mail</span>
     </div>
   </div>
