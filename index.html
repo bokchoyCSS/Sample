@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Michitabi — Super Local Tokyo Tours</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream: #f4ede0;
+    --cream-deep: #ebe1cf;
+    --ink: #111111;
+    --ink-soft: #2a2722;
+    --yellow: #ffd60a;
+    --yellow-deep: #f5c200;
+    --red: #e63946;
+    --muted: #6b6359;
+    --line: rgba(17, 17, 17, 0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'EB Garamond', serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    cursor: default;
+  }
+
+  /* Subtle paper grain */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  /* ============ NAV ============ */
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 40px;
+    mix-blend-mode: difference;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .nav .brand { display: flex; align-items: center; gap: 10px; }
+  .nav .brand .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--red);
+  }
+  .nav ul { display: flex; gap: 32px; list-style: none; }
+  .nav a { color: inherit; text-decoration: none; transition: opacity .3s; }
+  .nav a:hover { opacity: 0.6; }
+
+  /* ============ HERO ============ */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--ink);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 2px;
+    opacity: 0.45;
+  }
+  .hero-bg .tile {
+    background-size: cover;
+    background-position: center;
+    background-color: #1a1a1a;
+    opacity: 0;
+    animation: fadeTile 18s infinite;
+    filter: grayscale(20%) contrast(1.05);
+  }
+  .hero-bg .tile:nth-child(1) { animation-delay: 0s; background-image: linear-gradient(135deg, #2a2a2a, #444); }
+  .hero-bg .tile:nth-child(2) { animation-delay: 1.5s; background-image: linear-gradient(135deg, #1f1f1f, #333); }
+  .hero-bg .tile:nth-child(3) { animation-delay: 3s; background-image: linear-gradient(135deg, #2a2a2a, #555); }
+  .hero-bg .tile:nth-child(4) { animation-delay: 4.5s; background-image: linear-gradient(135deg, #1a1a1a, #2e2e2e); }
+  .hero-bg .tile:nth-child(5) { animation-delay: 6s; background-image: linear-gradient(135deg, #333, #1f1f1f); }
+  .hero-bg .tile:nth-child(6) { animation-delay: 7.5s; background-image: linear-gradient(135deg, #2a2a2a, #444); }
+  .hero-bg .tile:nth-child(7) { animation-delay: 9s; background-image: linear-gradient(135deg, #1f1f1f, #333); }
+  .hero-bg .tile:nth-child(8) { animation-delay: 10.5s; background-image: linear-gradient(135deg, #2a2a2a, #555); }
+  .hero-bg .tile:nth-child(9) { animation-delay: 12s; background-image: linear-gradient(135deg, #1a1a1a, #2e2e2e); }
+  .hero-bg .tile:nth-child(10) { animation-delay: 13.5s; background-image: linear-gradient(135deg, #333, #1f1f1f); }
+  .hero-bg .tile:nth-child(11) { animation-delay: 15s; background-image: linear-gradient(135deg, #2a2a2a, #444); }
+  .hero-bg .tile:nth-child(12) { animation-delay: 16.5s; background-image: linear-gradient(135deg, #1f1f1f, #333); }
+
+  @keyframes fadeTile {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50%      { opacity: 0.55; transform: scale(1.04); }
+  }
+
+  .hero-vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.5) 70%, rgba(0,0,0,0.85) 100%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: var(--cream);
+    padding: 0 24px;
+    max-width: 900px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 30px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.3s forwards;
+  }
+
+  .hero-logo {
+    display: inline-block;
+    background: transparent;
+    color: var(--cream);
+    padding: 32px 48px;
+    border-radius: 50%;
+    width: 320px;
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 0 auto 40px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.5s forwards;
+  }
+  .hero-logo::before {
+    content: "";
+    position: absolute;
+    top: 52px; right: 18px;
+    width: 101px; height: 101px;
+    border-radius: 50%;
+    background: var(--red);
+    z-index: 0;
+  }
+  .hero-logo .logo-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 54px;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+    z-index: 1;
+    position: relative;
+    color: var(--cream);
+  }
+  .hero-logo .logo-text span { display: block; }
+  .hero-logo .logo-meta {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    margin-top: 16px;
+    z-index: 1;
+    position: relative;
+    color: rgba(244, 237, 224, 0.7);
+  }
+
+  .hero-tagline {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: clamp(18px, 2.2vw, 24px);
+    line-height: 1.5;
+    color: rgba(244, 237, 224, 0.85);
+    margin-bottom: 60px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.7s forwards;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Tripadvisor aggregate rating badge */
+  .rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 28px;
+    background: rgba(244, 237, 224, 0.08);
+    border: 1px solid rgba(244, 237, 224, 0.18);
+    border-radius: 999px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--cream);
+    text-decoration: none;
+    transition: background 0.4s, border-color 0.4s, transform 0.4s;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.9s forwards;
+  }
+  .rating-badge:hover {
+    background: rgba(244, 237, 224, 0.14);
+    border-color: rgba(244, 237, 224, 0.35);
+    transform: translateY(-2px);
+  }
+  .rating-stars {
+    color: #00b67a;
+    font-size: 17px;
+    letter-spacing: 3px;
+  }
+  .rating-score {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .rating-divider {
+    width: 1px;
+    height: 22px;
+    background: rgba(244, 237, 224, 0.25);
+  }
+  .rating-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.2;
+    text-align: left;
+  }
+  .rating-count {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+  .rating-source {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: rgba(244, 237, 224, 0.6);
+  }
+  .rating-arrow {
+    width: 14px;
+    height: 14px;
+    color: var(--yellow);
+    margin-left: 4px;
+    transition: transform 0.4s;
+  }
+  .rating-badge:hover .rating-arrow {
+    transform: translate(3px, -3px);
+  }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: 30px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--cream);
+    opacity: 0.6;
+    text-transform: uppercase;
+    z-index: 2;
+  }
+  .scroll-cue::after {
+    content: "";
+    display: block;
+    width: 1px; height: 40px;
+    background: var(--cream);
+    margin: 12px auto 0;
+    animation: scrollLine 2s ease infinite;
+    transform-origin: top;
+  }
+  @keyframes scrollLine {
+    0% { transform: scaleY(0); }
+    50% { transform: scaleY(1); }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============ SECTION 2 — EXPLORE ============ */
+  .explore {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--cream);
+    position: relative;
+  }
+
+  .explore-left {
+    padding: 120px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .explore-left::before {
+    content: "東京";
+    position: absolute;
+    top: 60px; left: 70px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 200px;
+    color: var(--ink);
+    opacity: 0.04;
+    line-height: 1;
+  }
+  .section-tag {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-tag::before {
+    content: ""; width: 30px; height: 1px; background: var(--red);
+  }
+  .explore h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: clamp(56px, 7vw, 110px);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    margin-bottom: 40px;
+    text-transform: uppercase;
+  }
+  .explore h2 em {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    text-transform: lowercase;
+    letter-spacing: -0.02em;
+    color: var(--red);
+  }
+  .explore-desc {
+    font-family: 'EB Garamond', serif;
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 480px;
+    margin-bottom: 40px;
+  }
+  .explore-desc em { font-style: italic; }
+
+  .link-arrow {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 6px;
+    width: fit-content;
+    transition: gap 0.3s ease, color 0.3s;
+  }
+  .link-arrow:hover { gap: 24px; color: var(--red); border-color: var(--red); }
+  .link-arrow svg { width: 18px; height: 18px; }
+
+  .explore-right {
+    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+  }
+  .reels {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background: #0a0a0a;
+  }
+
+  .reel-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.4s ease;
+    background: #0a0a0a;
+  }
+  .reel-video.active { opacity: 0.8; }
+
+  /* Subtle top/bottom darken so the slide-meta text stays legible */
+  .reels::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.25) 0%, transparent 25%, transparent 70%, rgba(0,0,0,0.55) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .reel-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+    z-index: 0;
+  }
+  .reel-fallback-inner {
+    text-align: center;
+    color: var(--cream);
+    opacity: 0.4;
+  }
+  .reel-fallback-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.6;
+  }
+  .reel-fallback-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  .reel-mute {
+    position: absolute;
+    top: 24px; right: 24px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .reel-mute:hover {
+    background: rgba(0, 0, 0, 0.75);
+    transform: scale(1.06);
+  }
+
+  .slide-meta {
+    position: absolute;
+    bottom: 40px; left: 40px; right: 40px;
+    color: var(--cream);
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+  .slide-meta .num {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 56px;
+    letter-spacing: 0;
+    text-transform: none;
+    line-height: 1;
+  }
+
+  /* ============ SECTION 3 — WHY US ============ */
+  .why {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .why-left {
+    background: var(--yellow);
+    color: var(--ink);
+    padding: 120px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .why-left::before {
+    content: "?";
+    position: absolute;
+    bottom: 40px; right: 60px;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 480px;
+    line-height: 1;
+    color: var(--ink);
+    opacity: 0.08;
+  }
+  .why-left .section-tag { color: var(--ink); }
+  .why-left .section-tag::before { background: var(--ink); }
+
+  .why h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: clamp(56px, 7vw, 110px);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+  .why h2 em {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    text-transform: lowercase;
+  }
+  .trustpilot-slot {
+    margin-top: 50px;
+    max-width: 520px;
+    min-height: 200px;
+    position: relative;
+    z-index: 2;
+  }
+  /* Force Trustpilot/Tripadvisor iframes to blend better on yellow */
+  .trustpilot-slot iframe {
+    background: transparent !important;
+    max-width: 100% !important;
+  }
+
+  /* Reviews mockup card (hidden once a real widget mounts inside the slot) */
+  .review-mockup {
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 4px;
+    padding: 24px 26px 22px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    position: relative;
+  }
+  .review-mockup::before {
+    content: "MOCKUP";
+    position: absolute;
+    top: 14px; right: 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    color: rgba(244, 237, 224, 0.35);
+  }
+  .review-mockup-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(244, 237, 224, 0.12);
+  }
+  .review-mockup-stars {
+    color: #00b67a;
+    font-size: 15px;
+    letter-spacing: 2px;
+  }
+  .review-mockup-meta {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(244, 237, 224, 0.7);
+  }
+  .review-mockup-body {
+    position: relative;
+    min-height: 130px;
+  }
+  .review-card {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+  }
+  .review-card.active { opacity: 1; }
+  .review-card-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.01em;
+    color: var(--cream);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .review-card-text {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.45;
+    color: rgba(244, 237, 224, 0.78);
+    margin-bottom: 12px;
+  }
+  .review-card-author {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--yellow);
+  }
+  /* If the widget injects an iframe, hide the mockup automatically */
+  .trustpilot-slot:has(iframe) .review-mockup,
+  .trustpilot-slot:has(.trustpilot-widget) .review-mockup {
+    display: none;
+  }
+
+  .why-right {
+    padding: 120px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .check-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .check-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid rgba(244, 237, 224, 0.1);
+    transition: padding-left 0.4s ease, border-color 0.4s;
+    cursor: default;
+  }
+  .check-list li:hover {
+    padding-left: 12px;
+    border-color: var(--yellow);
+  }
+  .check-icon {
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--yellow);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+  }
+  .check-icon svg { width: 16px; height: 16px; }
+  .check-text {
+    font-family: 'EB Garamond', serif;
+    font-size: 21px;
+    line-height: 1.4;
+    color: var(--cream);
+  }
+  .check-text strong {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--yellow);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* ============ SECTION 4 — CONNECT ============ */
+  .connect {
+    min-height: 100vh;
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 80px 60px;
+  }
+  .connect::before {
+    content: "MICHITABI";
+    position: absolute;
+    bottom: -30px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 22vw;
+    line-height: 0.8;
+    letter-spacing: -0.05em;
+    color: var(--ink);
+    opacity: 0.05;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .connect-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .connect h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: clamp(64px, 9vw, 150px);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+  .connect h2 em {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    text-transform: lowercase;
+    color: var(--red);
+  }
+
+  .connect-sub {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 24px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 600px;
+    margin-bottom: 70px;
+  }
+
+  .connect-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.4fr;
+    gap: 20px;
+  }
+  .connect-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    padding: 36px 32px;
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+    transition: transform 0.4s ease, background 0.4s, color 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .connect-card:hover {
+    transform: translateY(-6px);
+  }
+  .connect-card .card-label {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .connect-card .card-handle {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+    margin-top: 16px;
+  }
+  .connect-card .card-cta {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+  .connect-card .card-arrow {
+    align-self: flex-end;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, color 0.3s, transform 0.4s;
+  }
+  .connect-card:hover .card-arrow {
+    background: var(--ink);
+    color: var(--cream);
+    transform: rotate(-45deg);
+  }
+  .connect-card.featured {
+    background: var(--ink);
+    color: var(--cream);
+    grid-row: span 1;
+  }
+  .connect-card.featured:hover {
+    background: var(--yellow);
+    color: var(--ink);
+  }
+  .connect-card.featured .card-label { color: var(--yellow); }
+  .connect-card.featured:hover .card-label { color: var(--ink); }
+  .connect-card.featured .card-cta { color: rgba(244, 237, 224, 0.7); }
+  .connect-card.featured:hover .card-cta { color: var(--ink-soft); }
+  .connect-card.featured .card-arrow {
+    border-color: var(--cream);
+    background: var(--yellow);
+    color: var(--ink);
+    width: 56px; height: 56px;
+  }
+  .connect-card.featured:hover .card-arrow {
+    background: var(--ink);
+    color: var(--yellow);
+    border-color: var(--ink);
+  }
+  .connect-card .card-handle.big {
+    font-size: 38px;
+    line-height: 1;
+  }
+
+  .footer {
+    margin-top: 80px;
+    padding-top: 30px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    .nav { padding: 18px 24px; }
+    .nav ul { gap: 18px; font-size: 9px; }
+    .explore, .why { grid-template-columns: 1fr; }
+    .explore-left, .why-left, .why-right { padding: 80px 28px; }
+    .why-left::before { font-size: 280px; }
+    .connect { padding: 80px 28px 40px; }
+    .connect-grid { grid-template-columns: 1fr; }
+    .footer { flex-direction: column; gap: 12px; text-align: center; }
+
+    /* Hide the reels panel on mobile — text-only Chapter 1 */
+    .explore-right { display: none; }
+    /* Pause/cleanup videos so they don't load data on mobile */
+    .reel-video { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand"><span class="dot"></span><span>Michitabi · Tokyo</span></div>
+  <ul>
+    <li><a href="#explore">Explore</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#connect">Book</a></li>
+  </ul>
+</nav>
+
+<!-- ========================== HERO ========================== -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div>
+    <div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div>
+    <div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div>
+  </div>
+  <div class="hero-vignette"></div>
+
+  <div class="hero-content">
+    <div class="hero-logo">
+      <div class="logo-text"><span>Michi</span><span>tabi</span></div>
+      <div class="logo-meta">JAPAN · ESTD 2025 · HIDDEN GEM</div>
+    </div>
+
+    <p class="hero-tagline">Sharing Unique Japan,<br/>not in Guidebooks.</p>
+
+    <a href="https://www.tripadvisor.com/Attraction_Review-g1066456-d34120682-Reviews-Michitabi_Tour-Shibuya_Tokyo_Tokyo_Prefecture_Kanto.html" target="_blank" rel="noopener" class="rating-badge">
+      <span class="rating-stars">★★★★★</span>
+      <span class="rating-score">4.9</span>
+      <span class="rating-divider"></span>
+      <span class="rating-meta">
+        <span class="rating-count">59 reviews</span>
+        <span class="rating-source">on Tripadvisor</span>
+      </span>
+      <svg class="rating-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+    </a>
+  </div>
+
+  <div class="scroll-cue">Scroll</div>
+</section>
+
+<!-- ========================== SECTION 2 — EXPLORE ========================== -->
+<section class="explore" id="explore">
+  <div class="explore-left">
+    <div class="section-tag">Chapter 01 · The Tour</div>
+    <h2>Explore<br/>Tokyo,<br/><em>by the experienced</em><br/>for the experiencers.</h2>
+    <p class="explore-desc">We've spent years getting lost in Tokyo so you don't have to. Backstreet izakayas, family-run sushi counters, neon alleys you'd walk past without a local — <em>that's the day we want to give you.</em></p>
+    <a href="about.html" class="link-arrow">
+      Get to know us
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+  <div class="explore-right">
+    <div class="reels" id="reels">
+      <video class="reel-video active" data-reel="0" muted loop playsinline preload="metadata">
+        <source src="reels/reel-01.mp4" type="video/mp4" />
+      </video>
+      <video class="reel-video" data-reel="1" muted loop playsinline preload="metadata">
+        <source src="reels/reel-02.mp4" type="video/mp4" />
+      </video>
+      <video class="reel-video" data-reel="2" muted loop playsinline preload="metadata">
+        <source src="reels/reel-03.mp4" type="video/mp4" />
+      </video>
+      <video class="reel-video" data-reel="3" muted loop playsinline preload="metadata">
+        <source src="reels/reel-04.mp4" type="video/mp4" />
+      </video>
+
+      <!-- Empty-state fallback (shows if videos fail / aren't uploaded yet) -->
+      <div class="reel-fallback">
+        <div class="reel-fallback-inner">
+          <div class="reel-fallback-icon">▶</div>
+          <div class="reel-fallback-text">Reels load here</div>
+        </div>
+      </div>
+
+      <!-- Mute toggle -->
+      <button class="reel-mute" id="reelMute" aria-label="Toggle sound">
+        <svg class="icon-muted" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+        <svg class="icon-unmuted" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+      </button>
+    </div>
+
+    <div class="slide-meta">
+      <span id="slideLabel">Shibuya · 渋谷</span>
+      <span class="num" id="slideNum">01 / 04</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========================== SECTION 3 — WHY US ========================== -->
+<section class="why" id="why">
+  <div class="why-left">
+    <div class="section-tag">Chapter 02 · The Difference</div>
+    <h2>Why<br/><em>us</em>?</h2>
+
+    <!-- ============================================================
+         OFFICIAL TRIPADVISOR / TRUSTPILOT WIDGET DROP ZONE
+         When you have the official embed code, paste it between the
+         markers below. The mockup inside .review-mockup will be
+         hidden automatically once the widget renders, so just paste
+         and you're done.
+         ============================================================ -->
+    <div class="trustpilot-slot">
+      <!-- WIDGET EMBED START -->
+      <!-- Paste your official Tripadvisor or Trustpilot embed snippet here -->
+      <!-- WIDGET EMBED END -->
+
+      <!-- Mockup (placeholder until the widget is connected) -->
+      <div class="review-mockup" id="reviewMockup">
+        <div class="review-mockup-head">
+          <span class="review-mockup-stars">★★★★★</span>
+          <span class="review-mockup-meta">4.9 · 59 reviews · Tripadvisor</span>
+        </div>
+        <div class="review-mockup-body">
+          <div class="review-card active">
+            <p class="review-card-title">"Highly recommended private tours in Tokyo!"</p>
+            <p class="review-card-text">Subaru showed us local places we'd never have found on our own — accommodating to every wish and great vibes the whole 4 hours.</p>
+            <div class="review-card-author">— Oksana R.</div>
+          </div>
+          <div class="review-card">
+            <p class="review-card-title">"A lovely Tokyo experience with Michitabi!"</p>
+            <p class="review-card-text">Even on a rainy day, Yuta and Taiga made it work. Cherry blossoms at Meguro river, local food on their recommendation — we didn't want it to end.</p>
+            <div class="review-card-author">— Ipshita · Bengaluru</div>
+          </div>
+          <div class="review-card">
+            <p class="review-card-title">"Street food and thrift day!"</p>
+            <p class="review-card-text">Spectacular day. Stayed away from tourist traps and explored the quiet side of Shimokitazawa. Tomoki built the perfect day, Wakana was the best guide.</p>
+            <div class="review-card-author">— Stella B.</div>
+          </div>
+          <div class="review-card">
+            <p class="review-card-title">"Great 4 hours in Tokyo"</p>
+            <p class="review-card-text">Saw the secret places and hidden shrines. Visited great restaurants and lovely cafes. 100% recommended.</p>
+            <div class="review-card-author">— Anton V. · Moosbach</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="why-right">
+    <ul class="check-list">
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="check-text"><strong>01 — The Real Tokyo</strong>Hidden gems & secret local spots</div>
+      </li>
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="check-text"><strong>02 — Just For You</strong>Private & personalised, every minute</div>
+      </li>
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="check-text"><strong>03 — Your Pace</strong>Flexible to your wishes & schedule</div>
+      </li>
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="check-text"><strong>04 — Anyone Welcome</strong>Couples, families & solo travellers</div>
+      </li>
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="check-text"><strong>05 — Eat Like A Local</strong>Authentic local food & street food</div>
+      </li>
+      <li>
+        <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="check-text"><strong>06 — Friends, Not Scripts</strong>Guides with pride, personality & vibes</div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========================== SECTION 4 — CONNECT ========================== -->
+<section class="connect" id="connect">
+  <div class="connect-inner">
+    <div class="section-tag">Chapter 03 · Let's Go</div>
+    <h2>What are you<br/>waiting <em>for</em>?</h2>
+    <p class="connect-sub">Get to know us, let's connect, and let's tour. Slide into our DMs, read what others are saying, or just book the day already.</p>
+
+    <div class="connect-grid">
+      <a href="https://www.instagram.com/michitabi.tour.jp/" target="_blank" rel="noopener" class="connect-card">
+        <div>
+          <div class="card-label">Instagram</div>
+          <div class="card-handle">@michitabi<br/>.tour.jp</div>
+          <div class="card-cta">67K following the journey</div>
+        </div>
+        <div class="card-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </div>
+      </a>
+
+      <a href="https://www.tripadvisor.com/" target="_blank" rel="noopener" class="connect-card">
+        <div>
+          <div class="card-label">Tripadvisor</div>
+          <div class="card-handle">Read the<br/>reviews</div>
+          <div class="card-cta">★★★★★ Loved by travellers</div>
+        </div>
+        <div class="card-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </div>
+      </a>
+
+      <a href="https://forms.google.com/" target="_blank" rel="noopener" class="connect-card featured">
+        <div>
+          <div class="card-label">Book Direct</div>
+          <div class="card-handle big">Customize<br/>your tour →</div>
+          <div class="card-cta">Tell us what you want, we'll build the day</div>
+        </div>
+        <div class="card-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </div>
+      </a>
+    </div>
+
+    <div class="footer">
+      <span>© 2025 Michitabi · Tokyo, Japan</span>
+      <span>Site handled by 旅人</span>
+      <span>Example site through mail</span>
+    </div>
+  </div>
+</section>
+
+<script>
+  /* ============ Smooth scroll (Lenis-style, non-snappy) ============ */
+  (function smoothScroll() {
+    let current = window.scrollY;
+    let target = window.scrollY;
+    let rafId = null;
+    const ease = 0.085; // lower = smoother/longer
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      target += e.deltaY;
+      target = Math.max(0, Math.min(target, document.body.scrollHeight - window.innerHeight));
+      if (!rafId) rafId = requestAnimationFrame(loop);
+    }, { passive: false });
+
+    // Anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        if (id.length > 1) {
+          const el = document.querySelector(id);
+          if (el) {
+            e.preventDefault();
+            target = el.getBoundingClientRect().top + window.scrollY;
+            if (!rafId) rafId = requestAnimationFrame(loop);
+          }
+        }
+      });
+    });
+
+    // Touch fallback (mobile uses native)
+    let isTouch = false;
+    window.addEventListener('touchstart', () => { isTouch = true; });
+
+    function loop() {
+      const diff = target - current;
+      if (Math.abs(diff) < 0.5) {
+        current = target;
+        window.scrollTo(0, current);
+        rafId = null;
+        return;
+      }
+      current += diff * ease;
+      window.scrollTo(0, current);
+      rafId = requestAnimationFrame(loop);
+    }
+  })();
+
+  /* ============ Review mockup rotator (Why Us — placeholder until widget is live) ============ */
+  (function rotateReviewMockup() {
+    const cards = document.querySelectorAll('#reviewMockup .review-card');
+    if (cards.length === 0) return;
+    let i = 0;
+    setInterval(() => {
+      cards[i].classList.remove('active');
+      i = (i + 1) % cards.length;
+      cards[i].classList.add('active');
+    }, 4500);
+  })();
+
+  /* ============ Reels player (Chapter 1) — ambient full-bleed ============ */
+  (function reelsPlayer() {
+    const videos = Array.from(document.querySelectorAll('#reels .reel-video'));
+    const muteBtn = document.getElementById('reelMute');
+    const iconMuted = muteBtn.querySelector('.icon-muted');
+    const iconUnmuted = muteBtn.querySelector('.icon-unmuted');
+    const labels = ['Shibuya · 渋谷', 'Asakusa · 浅草', 'Shinjuku · 新宿', 'Yanaka · 谷中'];
+    const labelEl = document.getElementById('slideLabel');
+    const numEl = document.getElementById('slideNum');
+
+    let current = 0;
+    let muted = true;
+
+    function setActive(i) {
+      videos.forEach((v, idx) => {
+        if (idx === i) {
+          v.classList.add('active');
+          v.play().catch(() => { /* autoplay may fail — fine, fallback shows */ });
+        } else {
+          v.classList.remove('active');
+          v.pause();
+          v.currentTime = 0;
+        }
+      });
+      labelEl.textContent = labels[i];
+      numEl.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(videos.length).padStart(2, '0');
+      current = i;
+    }
+
+    muteBtn.addEventListener('click', () => {
+      muted = !muted;
+      videos.forEach(v => { v.muted = muted; });
+      iconMuted.style.display = muted ? '' : 'none';
+      iconUnmuted.style.display = muted ? 'none' : '';
+    });
+
+    // Auto-cycle every 10s — ambient background vibe
+    setInterval(() => setActive((current + 1) % videos.length), 10000);
+
+    // Kick off first video
+    setActive(0);
+  })();
+</script>
+
+</body>
+</html>

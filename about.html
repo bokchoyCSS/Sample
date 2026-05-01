@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>About — Michitabi · The Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream: #f4ede0;
+    --cream-deep: #ebe1cf;
+    --ink: #111111;
+    --ink-soft: #2a2722;
+    --yellow: #ffd60a;
+    --yellow-deep: #f5c200;
+    --red: #e63946;
+    --muted: #6b6359;
+    --line: rgba(17, 17, 17, 0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'EB Garamond', serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Subtle paper grain */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  /* ============ NAV ============ */
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 40px;
+    mix-blend-mode: difference;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .nav .brand { display: flex; align-items: center; gap: 10px; }
+  .nav .brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+  .nav ul { display: flex; gap: 32px; list-style: none; }
+  .nav a { color: inherit; text-decoration: none; transition: opacity .3s; }
+  .nav a:hover { opacity: 0.6; }
+
+  /* ============ STORY HERO — portrait background ============ */
+  .story-hero {
+    position: relative;
+    min-height: 100vh;
+    background: var(--ink);
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    color: var(--cream);
+  }
+
+  .story-bg {
+    position: absolute;
+    inset: 0;
+    /* Replace this gradient with: background-image: url('founder.jpg'); */
+    background:
+      radial-gradient(ellipse at 70% 30%, rgba(80, 60, 40, 0.6) 0%, transparent 60%),
+      linear-gradient(135deg, #2a1f15 0%, #1a1a1a 50%, #221810 100%);
+    background-size: cover;
+    background-position: center;
+    filter: grayscale(15%) contrast(1.05) brightness(0.85);
+  }
+  /* Slow Ken Burns drift for atmosphere */
+  .story-bg.has-image {
+    animation: kenburns 30s ease-in-out infinite alternate;
+  }
+  @keyframes kenburns {
+    from { transform: scale(1) translate(0, 0); }
+    to   { transform: scale(1.08) translate(-1%, -1%); }
+  }
+
+  .story-hero::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 30%, rgba(0,0,0,0.4) 65%, rgba(0,0,0,0.92) 100%);
+    pointer-events: none;
+  }
+
+  .story-hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 80px 100px;
+    max-width: 900px;
+  }
+
+  .story-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.2s forwards;
+  }
+  .story-eyebrow::before {
+    content: ""; width: 36px; height: 1px; background: var(--yellow);
+  }
+
+  .story-hero h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: clamp(48px, 7vw, 110px);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.4s forwards;
+  }
+  .story-hero h1 em {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    text-transform: lowercase;
+    color: var(--yellow);
+    letter-spacing: -0.02em;
+  }
+
+  .story-hero-sub {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: clamp(18px, 1.8vw, 22px);
+    line-height: 1.5;
+    color: rgba(244, 237, 224, 0.8);
+    max-width: 540px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.6s forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============ STORY BODY — long-read editorial ============ */
+  .story {
+    background: var(--cream);
+    padding: 140px 80px;
+    position: relative;
+  }
+  .story::before {
+    content: "道";
+    position: absolute;
+    top: 60px; right: 60px;
+    font-family: 'EB Garamond', serif;
+    font-weight: 500;
+    font-size: 380px;
+    line-height: 1;
+    color: var(--ink);
+    opacity: 0.04;
+    pointer-events: none;
+  }
+
+  .story-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .story-chapter {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .story-chapter::before {
+    content: ""; width: 30px; height: 1px; background: var(--red);
+  }
+
+  .story-headline {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: clamp(36px, 4.5vw, 60px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 50px;
+  }
+  .story-headline em {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    text-transform: lowercase;
+    color: var(--red);
+  }
+
+  .story-lead {
+    font-family: 'EB Garamond', serif;
+    font-size: 24px;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 36px;
+  }
+  .story-lead::first-letter {
+    font-family: 'EB Garamond', serif;
+    font-weight: 500;
+    font-size: 80px;
+    float: left;
+    line-height: 0.85;
+    margin: 8px 12px 0 -2px;
+    color: var(--red);
+  }
+
+  .story p {
+    font-family: 'EB Garamond', serif;
+    font-size: 19px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin-bottom: 28px;
+  }
+  .story p em {
+    font-style: italic;
+  }
+
+  .story-pull {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: clamp(28px, 3.6vw, 40px);
+    line-height: 1.3;
+    color: var(--ink);
+    margin: 70px -40px;
+    padding: 40px 50px;
+    border-left: 3px solid var(--yellow);
+    position: relative;
+  }
+  .story-pull::before {
+    content: "“";
+    position: absolute;
+    top: -10px; left: 30px;
+    font-size: 100px;
+    line-height: 1;
+    color: var(--yellow);
+    opacity: 0.4;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+  }
+  .story-pull cite {
+    display: block;
+    font-style: normal;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 24px;
+  }
+
+  .story-divider {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 70px 0;
+    color: var(--muted);
+  }
+  .story-divider::before,
+  .story-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+  .story-divider span {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+  }
+
+  .story-signature {
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  .signature-name {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .signature-role {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* ============ CONNECT — same as homepage ============ */
+  .connect {
+    min-height: 100vh;
+    background: var(--cream-deep);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 80px 60px;
+  }
+  .connect::before {
+    content: "MICHITABI";
+    position: absolute;
+    bottom: -30px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 22vw;
+    line-height: 0.8;
+    letter-spacing: -0.05em;
+    color: var(--ink);
+    opacity: 0.05;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .connect-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+  .section-tag {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-tag::before {
+    content: ""; width: 30px; height: 1px; background: var(--red);
+  }
+  .connect h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: clamp(64px, 9vw, 150px);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+  .connect h2 em {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    text-transform: lowercase;
+    color: var(--red);
+  }
+  .connect-sub {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 24px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 600px;
+    margin-bottom: 70px;
+  }
+  .connect-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.4fr;
+    gap: 20px;
+  }
+  .connect-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    padding: 36px 32px;
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+    transition: transform 0.4s ease, background 0.4s, color 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .connect-card:hover { transform: translateY(-6px); }
+  .connect-card .card-label {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .connect-card .card-handle {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+    margin-top: 16px;
+  }
+  .connect-card .card-cta {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+  .connect-card .card-arrow {
+    align-self: flex-end;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, color 0.3s, transform 0.4s;
+  }
+  .connect-card:hover .card-arrow {
+    background: var(--ink);
+    color: var(--cream);
+    transform: rotate(-45deg);
+  }
+  .connect-card.featured {
+    background: var(--ink);
+    color: var(--cream);
+    grid-row: span 1;
+  }
+  .connect-card.featured:hover { background: var(--yellow); color: var(--ink); }
+  .connect-card.featured .card-label { color: var(--yellow); }
+  .connect-card.featured:hover .card-label { color: var(--ink); }
+  .connect-card.featured .card-cta { color: rgba(244, 237, 224, 0.7); }
+  .connect-card.featured:hover .card-cta { color: var(--ink-soft); }
+  .connect-card.featured .card-arrow {
+    border-color: var(--cream);
+    background: var(--yellow);
+    color: var(--ink);
+    width: 56px; height: 56px;
+  }
+  .connect-card.featured:hover .card-arrow {
+    background: var(--ink);
+    color: var(--yellow);
+    border-color: var(--ink);
+  }
+  .connect-card .card-handle.big { font-size: 38px; line-height: 1; }
+
+  .footer {
+    margin-top: 80px;
+    padding-top: 30px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .footer a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    .nav { padding: 18px 24px; }
+    .nav ul { gap: 18px; font-size: 9px; }
+    .story-hero-content { padding: 0 28px 70px; }
+    .story { padding: 80px 28px; }
+    .story::before { font-size: 220px; }
+    .story-pull { margin: 50px 0; padding: 30px 24px; }
+    .story-lead::first-letter { font-size: 60px; }
+    .connect { padding: 80px 28px 40px; }
+    .connect-grid { grid-template-columns: 1fr; }
+    .footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand"><span class="dot"></span><span><a href="index.html" style="color: inherit; text-decoration: none;">Michitabi · Tokyo</a></span></div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#why">Why Us</a></li>
+    <li><a href="index.html#connect">Book</a></li>
+  </ul>
+</nav>
+
+<!-- ========================== STORY HERO ========================== -->
+<section class="story-hero">
+  <!-- Replace the gradient background with a real photo:
+       1. drop founder.jpg (or similar) next to this HTML file
+       2. swap .story-bg below to: <div class="story-bg has-image" style="background-image: url('founder.jpg')"></div>
+       The .has-image class will trigger the slow Ken Burns drift. -->
+  <div class="story-bg"></div>
+
+  <div class="story-hero-content">
+    <div class="story-eyebrow">The Story · 物語</div>
+    <h1>The road<br/>before the<br/><em>road.</em></h1>
+    <p class="story-hero-sub">How a backpacker came home — and started taking strangers down the streets only locals know.</p>
+  </div>
+</section>
+
+<!-- ========================== STORY BODY ========================== -->
+<section class="story">
+  <div class="story-inner">
+    <div class="story-chapter">A Letter From The Founder</div>
+    <h2 class="story-headline">Real Tokyo,<br/>beyond the<br/><em>guidebooks.</em></h2>
+
+    <p class="story-lead">Until about a year ago, I was a backpacker. The kind of traveller who measures a city not by its monuments but by how easily a stranger will pull up a chair and ask where you're from.</p>
+
+    <p>I'd been on the road long enough to forget what coming home felt like. Then I came back to Japan — and remembered.</p>
+
+    <p>It wasn't the skyline or the trains or the convenience-store coffee, though those are all genuinely good. It was the people. The shop owner who walks you halfway down the street to make sure you find the right alley. The chef who learns your name on a Tuesday and remembers it the following Friday. The quiet, unfussy warmth of a country that doesn't perform for you — it just lets you in, slowly, if you stay long enough to notice.</p>
+
+    <blockquote class="story-pull">
+      I rediscovered how warm and welcoming people can be here — and it inspired me to share that feeling through my tours.
+      <cite>— Founder, Michitabi</cite>
+    </blockquote>
+
+    <p>That's the part you can't print in a guidebook. Guidebooks send you to Shibuya Crossing and Senso-ji. They're great. But they don't send you to the standing bar where the owner pours you a beer and asks what you do for work, or the family-run sushi counter that's been open for three generations and seats six people.</p>
+
+    <p>So I started taking people there myself. <em>Through local, unique experiences, I want guests to go beyond sightseeing and genuinely connect with the warmth of everyday Japan.</em> That's it. That's the whole idea.</p>
+
+    <div class="story-divider"><span>道 · The Path</span></div>
+
+    <p>What started as me showing one or two travellers around turned into something bigger than I planned. My friends got involved — chefs, photographers, fellow wanderers — each with their own corner of the city to share. We don't run scripts. We don't run schedules. We figure out who you are over the first ten minutes, and then we build the day around that.</p>
+
+    <p>Some days that means hidden shrines and matcha and the good kind of long walks. Some days it means street food and thrift shops in Shimokitazawa until your feet hurt. Sometimes it means standing on a bridge in Meguro at the exact moment the cherry blossoms decide to fall, even though it's raining and we'd planned to be somewhere else entirely.</p>
+
+    <p>However it goes — that's Michitabi. The road, and the journey, and the people you meet along the way. We'd love for you to be one of them.</p>
+
+    <div class="story-signature">
+      <div>
+        <div class="signature-name">Michitabi Crew</div>
+        <div class="signature-role">Tokyo · Founders &amp; Friends</div>
+      </div>
+      <div style="font-family: 'EB Garamond', serif; font-style: italic; font-size: 18px; color: var(--muted);">
+        Arigatou — for reading this far.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================== CONNECT ========================== -->
+<section class="connect" id="connect">
+  <div class="connect-inner">
+    <div class="section-tag">Chapter Final · Let's Go</div>
+    <h2>What are you<br/>waiting <em>for</em>?</h2>
+    <p class="connect-sub">Now that you know the story, let's write the next bit together. DMs, reviews, or straight to booking — whichever way feels right.</p>
+
+    <div class="connect-grid">
+      <a href="https://www.instagram.com/michitabi.tour.jp/" target="_blank" rel="noopener" class="connect-card">
+        <div>
+          <div class="card-label">Instagram</div>
+          <div class="card-handle">@michitabi<br/>.tour.jp</div>
+          <div class="card-cta">67K following the journey</div>
+        </div>
+        <div class="card-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </div>
+      </a>
+
+      <a href="https://www.tripadvisor.com/Attraction_Review-g1066456-d34120682-Reviews-Michitabi_Tour-Shibuya_Tokyo_Tokyo_Prefecture_Kanto.html" target="_blank" rel="noopener" class="connect-card">
+        <div>
+          <div class="card-label">Tripadvisor</div>
+          <div class="card-handle">Read the<br/>reviews</div>
+          <div class="card-cta">★ 4.9 · 59 reviews</div>
+        </div>
+        <div class="card-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </div>
+      </a>
+
+      <a href="https://forms.google.com/" target="_blank" rel="noopener" class="connect-card featured">
+        <div>
+          <div class="card-label">Book Direct</div>
+          <div class="card-handle big">Customize<br/>your tour →</div>
+          <div class="card-cta">Tell us what you want, we'll build the day</div>
+        </div>
+        <div class="card-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </div>
+      </a>
+    </div>
+
+    <div class="footer">
+      <span>© 2025 Michitabi · Tokyo, Japan</span>
+      <span>Site handled by 旅人</span>
+      <span>Example site through mail</span>
+    </div>
+  </div>
+</section>
+
+<script>
+  /* Smooth scroll — same Lenis-style easing as the homepage */
+  (function smoothScroll() {
+    let current = window.scrollY;
+    let target = window.scrollY;
+    let rafId = null;
+    const ease = 0.085;
+
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      target += e.deltaY;
+      target = Math.max(0, Math.min(target, document.body.scrollHeight - window.innerHeight));
+      if (!rafId) rafId = requestAnimationFrame(loop);
+    }, { passive: false });
+
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        if (id.length > 1) {
+          const el = document.querySelector(id);
+          if (el) {
+            e.preventDefault();
+            target = el.getBoundingClientRect().top + window.scrollY;
+            if (!rafId) rafId = requestAnimationFrame(loop);
+          }
+        }
+      });
+    });
+
+    function loop() {
+      const diff = target - current;
+      if (Math.abs(diff) < 0.5) {
+        current = target;
+        window.scrollTo(0, current);
+        rafId = null;
+        return;
+      }
+      current += diff * ease;
+      window.scrollTo(0, current);
+      rafId = requestAnimationFrame(loop);
+    }
+  })();
+</script>
+
+</body>
+</html>
